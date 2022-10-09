@@ -54,4 +54,10 @@
 <% } %>
 </body>
 <%- partial('_partial/footer') %>
+
+<% if (theme.music.enable) { %>
+    <%- fragment_cache('music', function(){
+        return partial('_partial/music');
+    }) %>
+<% } %> 
 </html>
