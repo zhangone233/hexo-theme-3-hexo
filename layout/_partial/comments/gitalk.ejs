@@ -3,7 +3,6 @@
 
 <script type="text/javascript">
     $.getScript("<%=theme.blog_path?theme.blog_path.lastIndexOf('/') === theme.blog_path.length-1?theme.blog_path.slice(0, theme.blog_path.length-1):theme.blog_path:'' %>/js/gitalk.js", function () {
-        console.log('<%=theme.gitalk.ClientID %>', 'ClientID');
         var gitalk = new Gitalk({
             clientID: '<%=theme.gitalk.ClientID %>',
             clientSecret: '<%=theme.gitalk.ClientSecret %>',
