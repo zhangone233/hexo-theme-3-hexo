@@ -2,7 +2,7 @@
 <html>
 <%- partial('_partial/header') %>
 <body>
-<aside class="nav mobile">
+<aside class="nav mobile" id="nav">
     <div class="nav-left">
         <%- fragment_cache('left', function(){
             return partial('_partial/nav-left');
@@ -48,16 +48,17 @@
     }) %>
 </div>
 <% if (theme.reward) {%>
-<%- fragment_cache('dashang', function(){
-    return partial('_partial/dashang');
-}) %>
+    <%- fragment_cache('dashang', function(){
+        return partial('_partial/dashang');
+    }) %>
 <% } %>
-</body>
-<%- partial('_partial/footer') %>
 
 <% if (theme.music.enable) { %>
     <%- fragment_cache('music', function(){
         return partial('_partial/music');
     }) %>
 <% } %> 
+</body>
+<%- partial('_partial/footer') %>
+
 </html>

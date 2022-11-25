@@ -1,33 +1,63 @@
-<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; right: 0; bottom: 0" >
   <div id="musicDragArea" style="position: absolute; top: 0; left: 0; width: 100%;height: 10px;cursor: move; z-index: 10;"></div>
-  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=340 src="//music.163.com/outchain/player?type=0&id=7680603150&auto=1&height=430"></iframe>
+  <iframe id="musicDragAreaIframe" hidden frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=340 src="//music.163.com/outchain/player?type=0&id=7680603150&auto=1&height=430"></iframe>
 </div>
 
 <!--以下代码是为了支持随时拖动音乐控件的位置，如没有需求，可去掉下面代码-->
 <script>
-  var $DOC = $(document)
-  $('#musicMouseDrag').on('mousedown', function (e) {
-    // 阻止文本选中
-    $DOC.bind("selectstart", function () {
-      return false;
+  var $DOC = $(document);
+  var $musicDragArea = $('#musicDragArea');
+  var $musicMouseDrag = $('#musicMouseDrag');
+  var $musicDragAreaIframe = $('#musicDragAreaIframe');
+
+  // $musicMouseDrag.on('mousedown', function (e) {
+  //   // 阻止文本选中
+  //   $DOC.bind("selectstart", function () {
+  //     return false;
+  //   });
+  //   $musicDragArea.css('height', '100%');
+
+  //   var $moveTarget = $musicMouseDrag;
+  //   var div_x = e.pageX - $moveTarget.offset().left;
+  //   var div_y = e.pageY - $moveTarget.offset().top;
+  //   $moveTarget.css('border', '1px dashed grey');
+    
+  //   $DOC.on('mousemove', function (e) {
+  //     var targetX = e.pageX - div_x;
+  //     var targetY = e.pageY - div_y;
+  //     targetX = targetX < 0 ? 0 : (targetX + $moveTarget.outerWidth() >= window.innerWidth) ? window.innerWidth - $moveTarget.outerWidth() : targetX;
+  //     targetY = targetY < 0 ? 0 : (targetY + $moveTarget.outerHeight() >= window.innerHeight) ? window.innerHeight - $moveTarget.outerHeight() : targetY;
+  //     $moveTarget.css({'left': targetX + 'px', 'top': targetY + 'px', 'bottom': 'inherit', 'right': 'inherit'})
+  //   }).on('mouseup', function () {
+  //     $DOC.unbind("selectstart");
+  //     $DOC.off('mousemove')
+  //     $DOC.off('mouseup')
+  //     $moveTarget.css('border', 'none')
+  //     $musicDragArea.css('height', '10px');
+  //   });
+  // });
+
+  // 等iframe加载完了之后再让其展示出来。 （直接设置高度为100会导致歌单列表无法正常滚动）
+  $musicDragAreaIframe.on('load', function () {
+    $musicDragAreaIframe.css({
+      width: '110px',
+      height: '100px',
     });
-    $('#musicDragArea').css('height', '100%');
-    var $moveTarget = $('#musicMouseDrag');
-    $moveTarget.css('border', '1px dashed grey')
-    var div_x = e.pageX - $moveTarget.offset().left;
-    var div_y = e.pageY - $moveTarget.offset().top;
-    $DOC.on('mousemove', function (e) {
-      var targetX = e.pageX - div_x;
-      var targetY = e.pageY - div_y;
-      targetX = targetX < 0 ? 0 : (targetX + $moveTarget.outerWidth() >= window.innerWidth) ? window.innerWidth - $moveTarget.outerWidth() : targetX;
-      targetY = targetY < 0 ? 0 : (targetY + $moveTarget.outerHeight() >= window.innerHeight) ? window.innerHeight - $moveTarget.outerHeight() : targetY;
-      $moveTarget.css({'left': targetX + 'px', 'top': targetY + 'px', 'bottom': 'inherit', 'right': 'inherit'})
-    }).on('mouseup', function () {
-      $DOC.unbind("selectstart");
-      $DOC.off('mousemove')
-      $DOC.off('mouseup')
-      $moveTarget.css('border', 'none')
-      $('#musicDragArea').css('height', '10px');
-    })
-  })
+    $musicDragAreaIframe.attr('hidden', false);
+  });
+
+  // 鼠标移入、移出设置宽度
+  $musicMouseDrag.on('mouseenter', function (e) {
+    e.stopPropagation();
+    $musicDragAreaIframe.stop(true, false).animate({
+      width: '330px',
+      height: '340px',
+    }, 'fast');
+  }).on('mouseleave', function (e) {
+    e.stopPropagation();
+    $musicDragAreaIframe.stop(true, false).animate({
+      width: '110px',
+      height: '100px',
+    }, 'fast');
+  });
 </script>
